@@ -1,0 +1,25 @@
+/* Manufacturer: Generic */
+INSERT INTO Device_Manufacturer(ID, Name, LogoName, Type, TimeStamp)
+SELECT X'F03E282100C54B40899DBB7708D15AF6', 'Generic ADB', '', 2, DATETIME('NOW', 'LOCALTIME')
+WHERE NOT EXISTS (SELECT 1 FROM Device_Manufacturer WHERE Type = 2 AND Name = 'Generic ADB');
+
+
+ /* ManufacturerToUserMap */
+INSERT INTO ManufacturerToUser(UserID, ManufacturerId, Flag)
+SELECT (SELECT ID FROM UserDetail WHERE UserName = 'Admin'), (SELECT ID FROM Device_Manufacturer WHERE Type = 2 AND Name = 'Generic ADB'), 1
+WHERE NOT EXISTS (SELECT 1 FROM ManufacturerToUser WHERE ManufacturerId = (SELECT ID FROM Device_Manufacturer WHERE Type = 2 AND Name = 'Generic ADB')); 
+
+/* Radio Model: Generic ADB */
+INSERT INTO IVIS_RadioModels(ID, Name, ManufacturerID, TimeStamp)
+SELECT X'6D75A0C3012AD54AAB8D2A00FA5D7561', 'Generic ADB', X'F03E282100C54B40899DBB7708D15AF6', DATETIME('NOW', 'LOCALTIME')
+WHERE NOT EXISTS (SELECT 1 FROM IVIS_RadioModels WHERE Name = 'Generic ADB');
+
+/* Vehicle Model: Generic */
+INSERT INTO IVIS_Models(ID, Name, RadioModelID, DllName, ClassName, TimeStamp)
+SELECT X'F41CA25DC34D0943BB4E8FAEEFE9BBA4', 'Generic',X'6D75A0C3012AD54AAB8D2A00FA5D7561', 'IVIS_GenericADB', 'IVIS_GenericADB.Generic', DATETIME('NOW', 'LOCALTIME')
+WHERE NOT EXISTS (SELECT 1 FROM IVIS_Models WHERE ID = X'F41CA25DC34D0943BB4E8FAEEFE9BBA4');
+
+/* Software Version: Generic */
+INSERT INTO IVIS_SoftwareVersion(ID, IVIS_ModelID, SoftwareVersion, TimeStamp)
+SELECT X'E7BC2865017B9243A363014DCF3297E8', X'F41CA25DC34D0943BB4E8FAEEFE9BBA4', 'Generic', DATETIME('NOW', 'LOCALTIME')
+WHERE NOT EXISTS (SELECT 1 FROM IVIS_SoftwareVersion WHERE ID = X'E7BC2865017B9243A363014DCF3297E8');
